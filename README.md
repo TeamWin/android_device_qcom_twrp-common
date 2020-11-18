@@ -2,6 +2,22 @@
 
 This device tree is made for Qualcomm devices which need working decryption in TWRP. It includes the necessary services and prepdecrypt script so that these do not need to be included in the device tree.
 
+## Prerequisites
+- TWRP device tree with necessary vendor service binaries and dependencies<sup>*</sup> already included
+```
+FDE binaries: qseecomd, keymaster(3.0/4.0)
+FBE binaries: FDE binaries + gatekeeper(1.0)
+```
+   <sup>*</sup> To find the necessary dependencies for the above binaries, a tool like @that1's [ldcheck](https://github.com/that1/ldcheck) can be used.
+
+_NOTE:_ -In the Android 8.1 & 9.0 trees, the binaries should be placed in the recovery ramdisk (recovery/root) in the same location as in the stock ROM, i.e. vendor/bin(/hw).
+        -In the Android 10 tree, the binaries should be placed in system/bin
+- init.recovery.$(ro.hardware).rc file in device tree with symlink for bootdevice included
+```
+symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+```
+
+## TWRP Common Decryption files
 To include these files for your device, the following BoardConfig flags should be used (only one flag is needed in either case, not both):
 ### FDE Devices
 - BOARD_USES_QCOM_DECRYPTION := true
