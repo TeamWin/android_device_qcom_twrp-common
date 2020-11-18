@@ -25,7 +25,9 @@ If for some reason these scripts do not work for you, increase the loglevel to `
 
 ### tzdata package
 The tree also provides a package to add tzdata to the TWRP tree, to get rid of these errors:
-`__bionic_open_tzdata: couldn't find any tzdata when looking for xxxxx`
+```
+__bionic_open_tzdata: couldn't find any tzdata when looking for xxxxx
+```
 
 To include tzdata in your TWRP build, add the corresponding package to your demice.mk as indicated below:
 ```
