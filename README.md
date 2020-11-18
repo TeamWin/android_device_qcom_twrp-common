@@ -7,10 +7,10 @@ To include these files in your device tree, the following flags should be used (
 - BOARD_USES_QCOM_DECRYPTION := true
 ### FBE Devices
 - BOARD_USES_QCOM_FBE_DECRYPTION := true
-### Android 10 Build Tree
-In the Android-10 tree, the packages will need to be added to the device tree device.mk as indicated below:
+### Other Build Tree Updates
+The packages will need to be added to the device tree device.mk as indicated below:
 ```
-PRODUCT_PACKAGES_ENG += \
+PRODUCT_PACKAGES += \
     qcom_decrypt \
     qcom_decrypt_fbe
 ```
@@ -22,3 +22,13 @@ To import the decryption rc files into your device tree, add this line to your `
 If you forget to add the above import, the build tree will add it for you if it can find your init.recovery.qcom.rc file. Otherwise, there will be a warning near the end of the build system output that the import needed to be added.
 
 If for some reason these scripts do not work for you, increase the loglevel to 2 in prepdecrypt.sh and review the additional logging in the recovery.log to see where the process is failing.
+
+### tzdata package
+The tree also provides a package to add tzdata to the TWRP tree, to get rid of these errors:
+`__bionic_open_tzdata: couldn't find any tzdata when looking for xxxxx`
+
+To include tzdata in your TWRP build, add the corresponding package to your demice.mk as indicated below:
+```
+PRODUCT_PACKAGES += \
+    tzdata_twrp
+```
