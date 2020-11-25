@@ -1,0 +1,96 @@
+import /init.recovery.services.qcom_decrypt.rc
+import /init.recovery.qcom_decrypt.fbe.rc
+
+on fs
+    # needed to make qseecomd work in recovery
+    chmod 0660 /dev/qseecom
+    chown system drmrpc /dev/qseecom
+    chmod 0664 /dev/ion
+    chown system system /dev/ion
+
+# && property:twrp.apex.loaded=true prop is only for devices with dynamic partitions.
+# Including that prop prevents decryption services from loading when entering fastbootd
+on property:ro.crypto.state=encrypted
+    start prepdecrypt
+
+# && property:hwservicemanager.ready=true is for Oreo+ build trees
+# hwservicemanager doesn't exist in older trees
+on property:crypto.ready=1 && property:hwservicemanager.ready=true
+    start qseecomd
+
+on property:sys.listeners.registered=true
+    start keymaster-3-0
+    start keymaster-3-0-qti
+    start keymaster-4-0
+    start keymaster-4-0-qti
+
+on property:vendor.sys.listeners.registered=true
+    start keymaster-3-0
+    start keymaster-3-0-qti
+    start keymaster-4-0
+    start keymaster-4-0-qti
+
+on property:ro.crypto.type=block && property:ro.crypto.fs_crypto_blkdev=*
+    setprop crypto.ready 0
+    stop qseecomd
+    stop keymaster-3-0
+    stop keymaster-3-0-qti
+    stop keymaster-4-0
+    stop keymaster-4-0-qti
+
+# For Android 10+ trees, services should be placed in /system/bin in the recovery ramdisk
+# For older trees, the services should be placed in /sbin
+# Make sure the path of the service EXACTLY matches the location of the binary!!
+#
+# NOTE: In pre-Android-10 trees using the latest "prepdecrypt" script, the vendor
+# services should be placed in the TWRP ramdisk in the same folder as in stock
+# (vendor/bin(/hw)) and the script will automatically relink them to /sbin.
+# If you prefer to put the binaries directly in /sbin, then you will need to manually
+# change the linker path in each binary from /system/bin/linker(64) to /sbin/linker(64)
+
+service prepdecrypt /system/bin/prepdecrypt.sh
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service qseecomd /system/bin/qseecomd
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service keymaster-3-0 /system/bin/android.hardware.keymaster@3.0-service
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service keymaster-3-0-qti /system/bin/android.hardware.keymaster@3.0-service-qti
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service keymaster-4-0 /system/bin/android.hardware.keymaster@4.0-service
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service keymaster-4-0-qti /system/bin/android.hardware.keymaster@4.0-service-qti
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
