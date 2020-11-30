@@ -12,7 +12,7 @@ LOGFILE=/tmp/recovery.log
 # set to the below values respectively if these props are blank when
 # the script runs. These values should be updated to reflect the
 # TWRP defaults in your device's BoardConfig.mk
-osver_twrp="16.1.0"
+osver_twrp="20.1.0"
 patchlevel_twrp="2099-12-31"
 
 # Set default log level
@@ -369,3 +369,4 @@ else
 	log_print 2 "Build tree is Nougat or older. Skip setting props."
 	finish
 fi
+>>>>>>> CHANGE (83fd6c prepdecrypt: change default PLATFORM_VERSION to 20.1.0)
