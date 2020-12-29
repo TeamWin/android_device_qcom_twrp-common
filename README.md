@@ -8,7 +8,7 @@ This device tree is made for Qualcomm devices which need working decryption in T
   FDE binaries: qseecomd, keymaster(3.0/4.0)
   FBE binaries: FDE binaries + gatekeeper(1.0)
   ```
-  ><sup>*</sup> To find the necessary dependencies for the above binaries, a tool like @that1's [ldcheck](https://github.com/that1/ldcheck) can be used.
+  ><sup>*</sup> To find the necessary dependencies for the above binaries, a tool like @that1's [ldcheck](https://github.com/that1/ldcheck) can be used (more info at bottom of this file).
 - init.recovery.$(ro.hardware).rc file in device tree with symlink for bootdevice included
   ```
   symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
@@ -57,3 +57,55 @@ PRODUCT_PACKAGES += \
 - android-8.1: [HTC U12+](https://github.com/TeamWin/android_device_htc_ime/tree/android-8.1/recovery/root)
 - android-9.0: [ASUS ROG Phone II](https://github.com/CaptainThrowback/android_device_asus_I001D/tree/android-9.0/recovery/root)
 - android-10: [ASUS ROG Phone 3/ZenFone 7 Series](https://github.com/CaptainThrowback/android_device_asus_sm8250-common/tree/android-10/recovery/root)
+
+
+### Using ldcheck to find dependencies
+The easiest way to find dependencies for the blobs you add from your device's vendor partition is using the ldcheck Python script. The syntax for using the script is below:
+```
+usage: ldcheck [-h] [-p PATH] [-r] [-a] [-d] FILE [FILE ...]
+
+Check dynamic linkage consistency.
+
+positional arguments:
+  FILE                  a dynamically linked executable or library.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PATH, --path PATH  Search path for libraries (use like LD_LIBRARY_PATH)
+  -r, --resolved        Print resolved symbols. By default only unresolved symbols are printed.
+  -a, --alldefined      Print all defined symbols
+  -d, --demangle        Demangle C++ names
+```
+The best way to determine what dependencies are missing from TWRP is to run the script on the blobs on the $OUT folder of a completed recovery build.
+By default TWRP includes many of the necessary dependencies in the recovery build, so typically you'll only need to add dependencies found in the vendor folder/partition of your device.
+
+For example, if you added qseecomd to your build, and you want to confirm that you have all of the necessary dependencies included for it, after the TWRP build is complete, you can run:
+```
+cd $OUT/recovery/root
+```
+Android 8.1/9.0:
+```
+ldcheck -p sbin:vendor/lib64 -d vendor/bin/qseecomd
+```
+Android 10:
+```
+ldcheck -p system/lib64:vendor/lib64 -d system/bin/qseecomd
+```
+The output will look like this, if all dependencies are met (example from Android 10 tree):
+```
+libs: ['system/bin/qseecomd', 'system/lib64/libcutils.so', 'system/lib64/libutils.so', 'system/lib64/liblog.so', 'vendor/lib64/libQSEEComAPI.so', 'vendor/lib64/libdrmfs.so', 'system/lib64/libc++.so', 'system/lib64/libc.so', 'system/lib64/libm.so', 'system/lib64/libdl.so', 'system/lib64/libbase.so', 'system/lib64/libprocessgroup.so', 'system/lib64/libvndksupport.so', 'system/lib64/libion.so', 'vendor/lib64/libdiag.so', 'system/lib64/libxml2.so', 'system/lib64/ld-android.so', 'system/lib64/libcgrouprc.so', 'system/lib64/libdl_android.so', 'system/lib64/libandroidicu.so', 'system/lib64/libicuuc.so', 'system/lib64/libicui18n.so']
+unused: {'system/lib64/libm.so', 'vendor/lib64/libdiag.so', 'system/lib64/libandroidicu.so', 'system/lib64/libprocessgroup.so', 'system/lib64/libicui18n.so', 'vendor/lib64/libQSEEComAPI.so', 'system/lib64/libdl_android.so', 'system/lib64/libutils.so', 'vendor/lib64/libdrmfs.so', 'system/lib64/libion.so', 'system/lib64/libxml2.so', 'system/lib64/libicuuc.so', 'system/lib64/libcgrouprc.so'}
+```
+If a dependency is missing, you'll see something like this:
+```
+readelf: Error: 'libQSEEComAPI.so': No such file
+readelf: Error: 'libdrmfs.so': No such file
+libs: ['system/bin/qseecomd', 'system/lib64/libcutils.so', 'system/lib64/libutils.so', 'system/lib64/liblog.so', 'libQSEEComAPI.so', 'libdrmfs.so', 'system/lib64/libc++.so', 'system/lib64/libc.so', 'system/lib64/libm.so', 'system/lib64/libdl.so', 'system/lib64/libbase.so', 'system/lib64/libprocessgroup.so', 'system/lib64/libvndksupport.so', 'system/lib64/ld-android.so', 'system/lib64/libcgrouprc.so', 'system/lib64/libdl_android.so']
+nm: 'libQSEEComAPI.so': No such file
+nm: 'libdrmfs.so': No such file
+nm: 'libQSEEComAPI.so': No such file
+nm: 'libdrmfs.so': No such file
+unused: {'libQSEEComAPI.so', 'system/lib64/libutils.so', 'system/lib64/libdl_android.so', 'system/lib64/libcgrouprc.so', 'libdrmfs.so', 'system/lib64/libprocessgroup.so', 'system/lib64/libm.so'}
+```
+That output indicates that libQSEEComAPI.so and libdrmfs.so are missing as dependencies, so those should be added to the appropriate location and then ldcheck should be run again to make sure those inclusions don't lead to additional missing dependencies or symbols.
+It's best to run ldcheck on every vendor file that you include, otherwise any of them can lead to a broken decryption cycle.
