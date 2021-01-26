@@ -49,7 +49,8 @@ ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),true)
 
     LOCAL_POST_INSTALL_CMD += \
         cp -f $(LOCAL_PATH)/crypto_fbe/init.recovery* $(TARGET_ROOT_OUT); \
-        cp -Ra $(LOCAL_PATH)/crypto_fbe/. $(TARGET_RECOVERY_ROOT_OUT);
+        cp -Ra $(LOCAL_PATH)/crypto_fbe/. $(TARGET_RECOVERY_ROOT_OUT); \
+        bash $(LOCAL_PATH)/scripts/service_cleanup.bash;
     ifeq ($(BOARD_BUILD_SYSTEM_ROOT_IMAGE),true)
         LOCAL_POST_INSTALL_CMD += \
             cp -Ra $(LOCAL_PATH)/crypto_fbe/system $(TARGET_RECOVERY_ROOT_OUT)/system_root/;
@@ -91,6 +92,10 @@ ifeq ($(BOARD_USES_QCOM_DECRYPTION),true)
     ifeq ($(BOARD_BUILD_SYSTEM_ROOT_IMAGE),true)
         LOCAL_POST_INSTALL_CMD += \
             cp -Ra $(LOCAL_PATH)/crypto/system $(TARGET_RECOVERY_ROOT_OUT)/system_root/;
+    endif
+
+    ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),)
+        LOCAL_POST_INSTALL_CMD += bash $(LOCAL_PATH)/scripts/service_cleanup.bash;
     endif
 
     include $(BUILD_PHONY_PACKAGE)

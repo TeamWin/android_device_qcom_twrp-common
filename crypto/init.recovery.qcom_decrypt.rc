@@ -40,7 +40,7 @@ on property:ro.crypto.type=block && property:ro.crypto.fs_crypto_blkdev=*
 
 # For Android 10+ trees, services should be placed in /system/bin in the recovery ramdisk
 # For older trees, the services should be placed in /sbin
-# Make sure the path of the service EXACTLY matches the location of the binary!!
+# Make sure the path EXACTLY matches the final location of the binary!!
 #
 # NOTE: In pre-Android-10 trees using the latest "prepdecrypt" script, the vendor
 # services should be placed in the TWRP ramdisk in the same folder as in stock
