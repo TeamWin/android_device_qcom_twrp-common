@@ -46,7 +46,9 @@ ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),true)
     # during ramdisk creation and only allows init.recovery.*.rc files to be copied
     # from TARGET_ROOT_OUT thereafter
     LOCAL_POST_INSTALL_CMD += \
-        cp -f $(LOCAL_PATH)/crypto_fbe/init.recovery* $(TARGET_ROOT_OUT);
+        cp -f $(LOCAL_PATH)/crypto_fbe/init.recovery* $(TARGET_ROOT_OUT); \
+        bash $(LOCAL_PATH)/scripts/service_cleanup.bash; \
+        bash $(LOCAL_PATH)/scripts/service_cleanup_fbe.bash;
     include $(BUILD_PHONY_PACKAGE)
 endif
 
@@ -86,6 +88,9 @@ ifeq ($(BOARD_USES_QCOM_DECRYPTION),true)
         LOCAL_POST_INSTALL_CMD += \
             cp -f $(LOCAL_PATH)/crypto/init.recovery.qcom_decrypt.rc $(TARGET_ROOT_OUT)/; \
             sed -i 's/on property:ro.crypto.state=encrypted && property:twrp.apex.loaded=true/on property:ro.crypto.state=encrypted/' $(TARGET_ROOT_OUT)/init.recovery.qcom_decrypt.rc;
+    endif
+    ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),)
+        LOCAL_POST_INSTALL_CMD += bash $(LOCAL_PATH)/scripts/service_cleanup.bash;
     endif
     include $(BUILD_PHONY_PACKAGE)
 endif
