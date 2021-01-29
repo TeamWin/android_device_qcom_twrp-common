@@ -1,4 +1,22 @@
 {
   "pushCert": "certificate version 0.1\npusher 02AC01A7795EEEB8 1611962781 -0500\npushee ssh://gerrit.twrp.me:29418/android_device_qcom_twrp-common\nnonce 1611962781-5C98B56F317FCAB4B05739C916AD11065B444CC2\n\n0000000000000000000000000000000000000000 5117937fad61801752ccd40591f6ed95af96b6af refs/for/android-10\n-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCgAdFiEEwl4aGFhPbHPCDtvWAqwBp3le7rgFAmAUmZ0ACgkQAqwBp3le\n7riuIA/+JcunzOT6GLnBHrnGK/liUeSvE1dmzIYvDIOq5r5oGDadriEilDpfJn1Q\naQgkDCRkTVBOCtYfEjVS0qSzzj9PZ6RFfPCXd38cDVbdHaWhvTVd8f73C6d4nS+8\npp7rSnLDzIK0eiPWFbpYTlv1Rpxmq2fhr+aHhX/sbRPbskzsk5d6RrpuRvs1Nq2K\nxf1t/nZXKXpWamYtDI6j2IambLUHbmmNyMQF5gd+Ecx9jxV+3JD/3Vh8EcCUx4zu\nKDmhHOVnpd9gnQPj79uDs2E6TF5FhbKO5X1QbT0Sri3BIPzsmGaajs7HxgOY8afO\nvfgWbg6PgBK3BA3SYRRLUdjbv4Ue5kjIAQPG/JN/fqKSYgaZo7C3OhT26KASbZEu\nhj+E0T5c7P2wvgd7zOKauWFKDX2naWUqDhmugI1uoWFFPG2j7aFv7qct/Uam81NI\nEu1YE+NWao0T8rfC9KoVaRHwp7+pGrjeQn+C4y8nr3TqS7kbF6WuFegjv9i5hyTc\nSXrYbyxOa2r/PSH3WTvQz+CLERk4kSmBD3guNBgG+TlYM4qMBXgmCsHvN8ainChI\nOP2A/ca7AhziNQ39B+CCkV2eo2od9q7pkYRY+NnFbuOXWbFXJkK8G5aG405+mpKA\nF5XJi7v0MgYE4bJmyoNp4+ohSWOoY10RKwPSywUMXj9oSmprL38\u003d\n\u003dRqvr\n-----END PGP SIGNATURE-----\n",
-  "comments": []
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4945f48f_30a6668c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2021-01-29T23:28:48Z",
+      "side": 1,
+      "message": "If someone that\u0027s using twrp-common for decryption could test this, I\u0027d appreciate it. The added script will clean up the rc files so only the services that are present in the recovery ramdisk will get included in the final files. Note that if your device files aren\u0027t in recovery/root in your device tree, then the script will exit and leave the files untouched.",
+      "revId": "5117937fad61801752ccd40591f6ed95af96b6af",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    }
+  ]
 }
