@@ -71,7 +71,7 @@ ifeq ($(BOARD_USES_QCOM_DECRYPTION),true)
     else
         LOCAL_POST_INSTALL_CMD += \
             cp -f $(LOCAL_PATH)/crypto/init.recovery.qcom_decrypt.rc $(TARGET_ROOT_OUT)/; \
-            sed -i 's/on property:ro.crypto.state=encrypted && property:twrp.apex.loaded=true/on property:ro.crypto.state=encrypted/' $(TARGET_ROOT_OUT)/init.recovery.qcom_decrypt.rc;
+            sed -i 's/on property:ro.crypto.state=encrypted && property:dynamic_partitions.ready=1/on property:ro.crypto.state=encrypted/' $(TARGET_ROOT_OUT)/init.recovery.qcom_decrypt.rc;
     endif
     ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),)
         LOCAL_POST_INSTALL_CMD += bash $(LOCAL_PATH)/scripts/service_cleanup.bash;
