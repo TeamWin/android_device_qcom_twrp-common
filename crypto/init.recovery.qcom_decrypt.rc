@@ -8,9 +8,13 @@ on fs
     chmod 0664 /dev/ion
     chown system system /dev/ion
 
+on property:ro.boot.dynamic_partitions=true
+	wait /dev/block/mapper
+	setprop dynamic_partitions.ready 1
+
 # && property:twrp.apex.loaded=true prop is only for devices with dynamic partitions.
 # Including that prop prevents decryption services from loading when entering fastbootd
-on property:ro.crypto.state=encrypted && property:twrp.apex.loaded=true
+on property:ro.crypto.state=encrypted && property:dynamic_partitions.ready=1
     start prepdecrypt
 
 # && property:hwservicemanager.ready=true is for Oreo+ build trees
