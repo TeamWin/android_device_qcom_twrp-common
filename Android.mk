@@ -32,7 +32,8 @@ ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),true)
     # from TARGET_ROOT_OUT thereafter
     LOCAL_POST_INSTALL_CMD += \
         cp -f $(LOCAL_PATH)/crypto_fbe/init.recovery* $(TARGET_ROOT_OUT); \
-        bash $(LOCAL_PATH)/scripts/service_cleanup.bash;
+        bash $(LOCAL_PATH)/scripts/service_cleanup.bash; \
+        bash $(LOCAL_PATH)/scripts/create_manifests.bash
     include $(BUILD_PHONY_PACKAGE)
 endif
 
@@ -74,7 +75,9 @@ ifeq ($(BOARD_USES_QCOM_DECRYPTION),true)
             sed -i 's/on property:ro.crypto.state=encrypted && property:dynamic_partitions.ready=1/on property:ro.crypto.state=encrypted/' $(TARGET_ROOT_OUT)/init.recovery.qcom_decrypt.rc;
     endif
     ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),)
-        LOCAL_POST_INSTALL_CMD += bash $(LOCAL_PATH)/scripts/service_cleanup.bash;
+        LOCAL_POST_INSTALL_CMD += \
+            bash $(LOCAL_PATH)/scripts/service_cleanup.bash; \
+            bash $(LOCAL_PATH)/scripts/create_manifests.bash
     endif
     include $(BUILD_PHONY_PACKAGE)
 endif
