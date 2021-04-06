@@ -12,7 +12,12 @@ find_dt_blobs()
 		echo "Unable to locate device tree blobs."
 		echo " "
 	fi
-	included_blobs=($(find "$blob_path" -type f \( -name "*keymaster*" -o -name "*gatekeeper*" \) | awk -F'/' '{print $NF}'))
+	included_blobs=($(find "$blob_path" -type f \( -name "*keymaster*" -o -name "*gatekeeper*" -o -name "*boot*-service" \) | awk -F'/' '{print $NF}'))
+	if [ -e "$vendorout" ]; then
+		included_blobs+=($(find "$vendorout" -type f -name "android.hardware.boot*-service" | awk -F'/' '{print $NF}'))
+	fi
+	included_blobs+=($(find "$dt_ramdisk" -type f -name "android.hardware.boot*-service" | awk -F'/' '{print $NF}'))
+	included_blobs_uniq=($(printf "%s\n" "${included_blobs[@]}" | sort -u))
 }
 
 generate_manifests()
@@ -23,7 +28,7 @@ generate_manifests()
 	vendor_manifest_file="$vendorout/manifest.xml"
 	echo -e '<manifest version="1.0" type="">' > "$system_manifest_file"
 	echo -e '<manifest version="1.0" type="">' > "$vendor_manifest_file"
-	for blob in "${included_blobs[@]}"; do
+	for blob in "${included_blobs_uniq[@]}"; do
 		case $blob in
 			*.so)
 				manifest_file="$system_manifest_file"
@@ -47,6 +52,9 @@ generate_manifests()
 		case $service_name in
 			*base*)
 				interface_name="IBase"
+				;;
+			*boot*)
+				interface_name="IBootControl"
 				;;
 			*gatekeeper*)
 				interface_name="IGatekeeper"
@@ -114,7 +122,7 @@ else
 	# android 10.0/11 branches
 	find_dt_blobs "$sysbin"
 fi
-if [ -z "$included_blobs" ]; then
+if [ -z "$included_blobs_uniq" ]; then
 	echo "No keymaster/gatekeeper blobs present."
 	echo " "
 fi
@@ -130,9 +138,9 @@ else
 fi
 
 # Combine blobs into a single array
-included_blobs+=($(echo ${hidl_blobs_uniq[@]}))
+included_blobs_uniq+=($(echo ${hidl_blobs_uniq[@]}))
 echo "All blobs:"
-printf '%s\n' "${included_blobs[@]}"
+printf '%s\n' "${included_blobs_uniq[@]}"
 
 # Create manifest files
 generate_manifests
