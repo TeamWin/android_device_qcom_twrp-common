@@ -16,6 +16,24 @@
       "message": "\u003e Patch Set 1:\n\u003e \n\u003e I don\u0027t have this problem - on what device is this an issue?\n\non phoenix, actually this -n is the issue you can check your logs whether you booting from fastboot of directly you will be getting fastboot found",
       "revId": "363296db3389a82319c4e387aeadeed1df187de1",
       "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff9ee118_3ee2665e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2021-04-15T14:53:12Z",
+      "side": 1,
+      "message": "I actually had the opposite issue (-z wasn\u0027t working) which is why I originally switched to -n in the first place. Weird that the results are so inconsistent.\n\nIs this only an issue for you in the 10 tree?",
+      "parentUuid": "3349ae74_98e48c7f",
+      "revId": "363296db3389a82319c4e387aeadeed1df187de1",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
     }
   ]
 }
