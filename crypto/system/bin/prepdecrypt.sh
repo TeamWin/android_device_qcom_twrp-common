@@ -246,7 +246,7 @@ fi
 if [ "$sdkver" -ge 26 ]; then
 	is_fastboot_boot=$(getprop ro.boot.fastboot)
 	skip_initramfs_present=$(grep skip_initramfs /proc/cmdline)
-	if [ "$SETPATCH" = false ] || [ -n "$skip_initramfs_present" ] || [ -n "$is_fastboot_boot" ]; then
+	if [ "$SETPATCH" = false ] || [ ! -z "$skip_initramfs_present" ] || [ ! -z "$is_fastboot_boot" ]; then
 		log_print 1 "SETPATCH=false, skip_initramfs flag, or ro.boot.fastboot found."
 		# Be sure to increase the PLATFORM_VERSION in build/core/version_defaults.mk to override Google's anti-rollback features to something rather insane
 		update_default_values "$osver" "$osver_orig" "OS version" "ro.build.version.release" osver_default_value
