@@ -79,8 +79,10 @@ generate_manifests()
 	echo -e '</manifest>' >> "$vendor_manifest_file"
 }
 
-oem=$(find "$PWD/device" -type d -name "$CUSTOM_BUILD" | sed -E "s/.*device\/(.*)\/$target_device.*/\1/")
-dt_ramdisk="$PWD/device/$oem/$CUSTOM_BUILD/recovery/root"
+target_device=${TARGET_PRODUCT#*_}
+OUT="$PWD/out/target/product/$target_device"
+oem=$(find "$PWD/device" -type d -name "$target_device" | sed -E "s/.*device\/(.*)\/$target_device.*/\1/")
+dt_ramdisk="$PWD/device/$oem/$target_device/recovery/root"
 recoveryout="$OUT/recovery/root"
 rootout="$OUT/root"
 sysbin="system/bin"
@@ -89,24 +91,8 @@ venbin="vendor/bin"
 vendorout="$OUT/vendor"
 decrypt_fbe_rc="init.recovery.qcom_decrypt.fbe.rc"
 
-case $TARGET_PLATFORM_VERSION in
-	R*)
-		sdkver=30
-		;;
-	Q*)
-		sdkver=29
-		;;
-	P*)
-		sdkver=28
-		;;
-	O*)
-		sdkver=27
-		;;
-esac
-
 echo " "
-echo "Running $SCRIPTNAME script for Qcom decryption..."
-echo -e "SDK version: $sdkver\n"
+echo -e "Running $SCRIPTNAME script for Qcom decryption...\n"
 
 if [ -e "$rootout/$decrypt_fbe_rc" ]; then
 	is_fbe=true
@@ -115,13 +101,8 @@ if [ -e "$rootout/$decrypt_fbe_rc" ]; then
 fi
 
 # pull filenames for included services
-if [ "$sdkver" -lt 29 ]; then
-	# android-8.1/9.0 branches
-	find_dt_blobs "$venbin"
-else
-	# android 10.0/11 branches
-	find_dt_blobs "$sysbin"
-fi
+# android 10.0/11 branches
+find_dt_blobs "$sysbin"
 if [ -z "$included_blobs_uniq" ]; then
 	echo "No keymaster/gatekeeper blobs present."
 	echo " "

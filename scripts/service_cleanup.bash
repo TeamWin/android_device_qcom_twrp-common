@@ -56,8 +56,10 @@ remove_section() {
   fi;
 }
 
-oem=$(find "$PWD/device" -type d -name "$CUSTOM_BUILD" | sed -E "s/.*device\/(.*)\/$target_device.*/\1/")
-dt_ramdisk="$PWD/device/$oem/$CUSTOM_BUILD/recovery/root"
+target_device=${TARGET_PRODUCT#*_}
+OUT="$PWD/out/target/product/$target_device"
+oem=$(find "$PWD/device" -type d -name "$target_device" | sed -E "s/.*device\/(.*)\/$target_device.*/\1/")
+dt_ramdisk="$PWD/device/$oem/$target_device/recovery/root"
 rootout="$OUT/root"
 recoveryout="$OUT/recovery/root"
 sysbin="system/bin"
@@ -65,24 +67,8 @@ venbin="vendor/bin"
 decrypt_rc="init.recovery.qcom_decrypt.rc"
 decrypt_fbe_rc="init.recovery.qcom_decrypt.fbe.rc"
 
-case $TARGET_PLATFORM_VERSION in
-	R*)
-		sdkver=30
-		;;
-	Q*)
-		sdkver=29
-		;;
-	P*)
-		sdkver=28
-		;;
-	O*)
-		sdkver=27
-		;;
-esac
-
 echo " "
-echo "Running $SCRIPTNAME script for Qcom decryption..."
-echo -e "SDK version: $sdkver\n"
+echo -e "Running $SCRIPTNAME script for Qcom decryption...\n"
 
 if [ -e "$rootout/$decrypt_fbe_rc" ]; then
 	is_fbe=true
@@ -91,13 +77,8 @@ if [ -e "$rootout/$decrypt_fbe_rc" ]; then
 fi
 
 # pull filenames for included services
-if [ "$sdkver" -lt 29 ]; then
-	# android-8.1/9.0 branches
-	find_dt_blobs "$venbin"
-else
-	# android 10.0/11 branches
-	find_dt_blobs "$sysbin"
-fi
+# android 10.0/11 branches
+find_dt_blobs "$sysbin"
 if [ -n "$included_blobs" ]; then
 	echo "Blobs parsed:"
 	printf '%s\n' "${included_blobs[@]}"
@@ -126,13 +107,8 @@ echo " "
 
 # remove unneeded services
 for service in ${services_not_included[@]}; do
-	if [ "$sdkver" -lt 29 ]; then
-		# android 9.0 branch
-		find_service_names "sbin"
-	else
-		# android 10.0 branch
-		find_service_names "system"
-	fi
+	# android 10.0/11 branches
+	find_service_names "system"
 	echo "Removing unneeded service: ${service_name[*]}"
 	case ${service_name[@]} in
 		gatekeeper*)
