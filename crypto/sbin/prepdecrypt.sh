@@ -76,7 +76,7 @@ finish()
 			rmdir "$TEMPVEN"
 		fi
 	fi
-	setprop crypto.ready 1
+	$setprop_bin crypto.ready 1
 	log_print 1 "crypto.ready=$(getprop crypto.ready)"
 	log_print 1 "Script complete. Device ready for decryption."
 	exit 0
@@ -92,7 +92,7 @@ finish_error()
 			rmdir "$TEMPVEN"
 		fi
 	fi
-	setprop crypto.ready 1
+	$setprop_bin crypto.ready 1
 	log_print 0 "Script run incomplete. Device may not be ready for decryption."
 	exit 2
 }
@@ -118,7 +118,7 @@ update_default_values()
 		if [ -n "$2" ]; then
 			log_print 2 "Original $3 found. $4_orig=$2"
 			log_print 2 "Setting $3 to original value..."
-			setprop "$4" "$2"
+			$setprop_bin "$4" "$2"
 			log_print 2 "$3 set. $4=$1"
 			log_print 2 "Updating $DEFAULTPROP with Original $3..."
 			echo "$4=$2" >> "/$DEFAULTPROP";
@@ -127,7 +127,7 @@ update_default_values()
 			log_print 0 "No Original $3 found. Setting default value..."
 			osver=$osver_twrp
 			patchlevel=$patchlevel_twrp
-			setprop "$4" "$1"
+			$setprop_bin "$4" "$1"
 			log_print 2 "$3 set. $4=$1"
 			log_print 2 "Updating $DEFAULTPROP with default $3..."
 			echo "$4=$1" >> "/$DEFAULTPROP";
