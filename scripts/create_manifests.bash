@@ -95,7 +95,7 @@ fi
 # pull filenames for included services
 # android 10.0/11 branches
 find_dt_blobs "$sysbin"
-if [ -z "$included_blobs_uniq" ]; then
+if [ -z "$included_blobs" ]; then
 	echo "No keymaster/gatekeeper blobs present."
 	echo " "
 fi
