@@ -66,7 +66,7 @@ decrypt_rc="init.recovery.qcom_decrypt.rc"
 decrypt_fbe_rc="init.recovery.qcom_decrypt.fbe.rc"
 
 case $TARGET_PLATFORM_VERSION in
-	R*)
+	R* | RP1A)
 		sdkver=30
 		;;
 	Q*)
