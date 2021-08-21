@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "086987fa_cd51e6d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 720
+      },
+      "writtenOn": "2021-08-21T18:56:51Z",
+      "side": 1,
+      "message": "-1 after this commit my recovery screen always blinking and not booted.\nOP 9 pro",
+      "revId": "1acce21123d73b2a93905d63a8da7827556628f7",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    }
+  ]
+}
