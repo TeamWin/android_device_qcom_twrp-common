@@ -67,6 +67,23 @@
       "message": "\u003e Patch Set 1:\n\u003e \n\u003e \u003e Patch Set 1:\n\u003e  \u003e \n\u003e  \u003e (1 comment)\n\u003e \n\u003e Do you have that manifest in your device tree? It seems like that\u0027s what\u0027s missing. The one from twrp-common only writes what\u0027s found in the output folder, but if you have a manifest with more services that are needed, then you should have it in your device tree and that\u0027ll overwrite the created one. I\u0027m not sure where the \"missing\" one is in your tree. The system/manifest.xml is just getting ignored without this patch. Can you link your device tree?\n\nim using this https://github.com/nebrassy/device_oneplus_lemonadep-TWRP\nhttps://github.com/nebrassy/device_oneplus_sm8350-common-TWRP",
       "revId": "1acce21123d73b2a93905d63a8da7827556628f7",
       "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a32f7d9_218b3ee2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 720
+      },
+      "writtenOn": "2021-08-22T16:21:55Z",
+      "side": 1,
+      "message": "\u003e Patch Set 1:\n\u003e \n\u003e \u003e Patch Set 1:\n\u003e  \u003e \n\u003e  \u003e (1 comment)\n\u003e \n\u003e I already told you what to do. Put the missing manifests in the correct location in the device tree and it\u0027ll take care of the issue.\n\nwhy im need to do something that working before it\u0027s broken with that commit 😄",
+      "revId": "1acce21123d73b2a93905d63a8da7827556628f7",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
     }
   ]
 }
