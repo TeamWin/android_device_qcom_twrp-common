@@ -33,6 +33,23 @@
       "message": "\u003e Patch Set 1:\n\u003e \n\u003e That means you\u0027re missing a service in one of your manifests. But this just adjusts the path to the one that A11 expects. Both A10 and A11 look in this path, so you may want to confirm the actual issue in logcat.\n\nYes after this commit im missing all service in manifests, without this commit all services in a right place. How take a logcat if recovery not started?",
       "revId": "1acce21123d73b2a93905d63a8da7827556628f7",
       "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36939a52_18037713",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 720
+      },
+      "writtenOn": "2021-08-22T15:44:41Z",
+      "side": 1,
+      "message": "\u003e Patch Set 1:\n\u003e \n\u003e You don\u0027t have any services in system/etc/vintf/manifest.xml and vendor/etc/vintf/manifest.xml in your OUT folder? Or are those files missing?\n\nsee this compare screens with and without this commit\nhttps://drive.google.com/folderview?id\u003d1xDGZa5ervrVrllaByRXh94nSWv0bpCsC",
+      "revId": "1acce21123d73b2a93905d63a8da7827556628f7",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
     }
   ]
 }
