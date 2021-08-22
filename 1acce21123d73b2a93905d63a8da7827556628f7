@@ -84,6 +84,24 @@
       "message": "\u003e Patch Set 1:\n\u003e \n\u003e \u003e Patch Set 1:\n\u003e  \u003e \n\u003e  \u003e (1 comment)\n\u003e \n\u003e I already told you what to do. Put the missing manifests in the correct location in the device tree and it\u0027ll take care of the issue.\n\nwhy im need to do something that working before it\u0027s broken with that commit 😄",
       "revId": "1acce21123d73b2a93905d63a8da7827556628f7",
       "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "601d1637_2d364be8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2021-08-22T19:07:40Z",
+      "side": 1,
+      "message": "Try picking this patch and let me know if it\u0027s fixed: https://gerrit.twrp.me/c/android_device_qcom_twrp-common/+/4266\n\nIf you can, post the end of the build log where it reports the script output.",
+      "parentUuid": "9a32f7d9_218b3ee2",
+      "revId": "1acce21123d73b2a93905d63a8da7827556628f7",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
     }
   ]
 }
