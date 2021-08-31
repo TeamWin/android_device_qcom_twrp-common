@@ -63,7 +63,7 @@ target_device=${TARGET_PRODUCT#*_}
 
 # Define OUT folder
 if [ "$PWD" = "/builds/min-aosp11" ]; then
-	OUT="/builds/out"
+	OUT="/builds/out/target/product/$target_device"
 else
 	OUT="$PWD/out/target/product/$target_device"
 fi

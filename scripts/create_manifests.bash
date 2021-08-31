@@ -100,11 +100,11 @@ target_device=${TARGET_PRODUCT#*_}
 
 # Define OUT folder
 if [ "$PWD" = "/builds/min-aosp11" ]; then
-	OUT="/builds/out"
+	OUT="/builds/out/target/product/$target_device"
 else
 	OUT="$PWD/out/target/product/$target_device"
 fi
-echo -e "OUT Folder set to: $OUT\n"
+echo -e "OUT Folder set to: $OUT"
 
 oem=$(find "$PWD/device" -type d -name "$target_device" | sed -E "s/.*device\/(.*)\/$target_device.*/\1/")
 dt_ramdisk="$PWD/device/$oem/$target_device/recovery/root"
