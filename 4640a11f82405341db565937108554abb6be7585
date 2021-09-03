@@ -34,6 +34,24 @@
       "parentUuid": "ab09af68_6f52ed8f",
       "revId": "4640a11f82405341db565937108554abb6be7585",
       "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efe4e9f4_179ceaab",
+        "filename": "crypto/system/bin/prepdecrypt.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2021-09-03T15:05:20Z",
+      "side": 1,
+      "message": "Still looks the same to me?",
+      "parentUuid": "3ac458de_5b479a98",
+      "revId": "4640a11f82405341db565937108554abb6be7585",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
     }
   ]
 }
