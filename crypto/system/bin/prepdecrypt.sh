@@ -10,13 +10,16 @@ LOGFILE=/tmp/recovery.log
 #
 # If you want to force setting of osver and patchlevel to the system/vendor version,
 # set the below prop in init.recovery "on init" to trigger the override function
-SETPATCH=$(getprop $SCRIPTNAME.setpatch)
-if [ -z "$SETPATCH" ]; then
-    SETPATCH_OVERRIDE=false
-else
-    SETPATCH_OVERRIDE=true
-fi
-
+check_setpatch_override()
+{
+	SETPATCH=$(getprop $SCRIPTNAME.setpatch)
+	if [ -z "$SETPATCH" ]; then
+		SETPATCH_OVERRIDE=false
+	else
+		SETPATCH_OVERRIDE=true
+		log_print 2 "SETPATCH Override flag found."
+	fi
+}
 #
 # Default TWRP values for PLATFORM_VERSION and PLATFORM_SECURITY_PATCH
 #
@@ -34,9 +37,9 @@ DEFAULT_LOGLEVEL=1
 # 2 Errors, Information, and Debugging
 CUSTOM_LOGLEVEL=$(getprop $SCRIPTNAME.loglevel)
 if [ -n "$CUSTOM_LOGLEVEL" ]; then
-    __VERBOSE="$CUSTOM_LOGLEVEL"
+	__VERBOSE="$CUSTOM_LOGLEVEL"
 else
-    __VERBOSE="$DEFAULT_LOGLEVEL"
+	__VERBOSE="$DEFAULT_LOGLEVEL"
 fi
 
 # Exit codes:
@@ -191,16 +194,22 @@ check_fastboot_boot()
 	twrpfastboot=$(grep twrpfastboot /proc/cmdline)
 	skip_initramfs_present=$(grep skip_initramfs /proc/cmdline)
 	if [ -n "$is_fastboot_boot" ]; then
-		SETPATCH=false
+		if [ "$SETPATCH_OVERRIDE" = "false" ]; then
+			SETPATCH=false
+		fi
 		log_print 2 "Fastboot boot detected. ro.boot.fastboot=$is_fastboot_boot"
 	elif [ -z "$is_fastboot_boot" ] && [ -n "$twrpfastboot" ]; then
-		SETPATCH=false
+		if [ "$SETPATCH_OVERRIDE" = "false" ]; then
+			SETPATCH=false
+		fi
 		log_print 2 "twrpfastboot flag found. Setting ro.boot.fastboot..."
 		$setprop_bin ro.boot.fastboot 1
 		is_fastboot_boot=$(getprop ro.boot.fastboot)
 		log_print 2 "ro.boot.fastboot=$is_fastboot_boot"
 	elif [ -z "$is_fastboot_boot" ] && [ -n "$skip_initramfs_present" ]; then
-		SETPATCH=false
+		if [ "$SETPATCH_OVERRIDE" = "false" ]; then
+			SETPATCH=false
+		fi
 		log_print 2 "skip_initramfs flag found. Setting ro.boot.fastboot..."
 		$setprop_bin ro.boot.fastboot 1
 		is_fastboot_boot=$(getprop ro.boot.fastboot)
@@ -290,17 +299,17 @@ if [ -n "$ab_device" ]; then
 fi
 
 recpath="/dev/block/bootdevice/by-name/recovery$suffix"
-
+check_setpatch_override
 if [ -e "$recpath" ]; then
 	log_print 2 "Device has recovery partition!"
 	# This should only be set to true for devices with recovery-in-boot
-	SETPATCH=false
+	if [ "$SETPATCH_OVERRIDE" = "false" ]; then
+		SETPATCH=false
+	fi
 else
 	log_print 2 "No recovery partition found."
     if [ "$SETPATCH_OVERRIDE" = "false" ]; then
         SETPATCH=true
-    else
-        log_print 2 "SETPATCH Override flag found."
     fi
 fi
 
@@ -311,6 +320,7 @@ if [ "$sdkver" -ge 26 ]; then
 
 	check_fastboot_boot
 
+	check_setpatch_override
 	log_print 1 "SETPATCH=$SETPATCH"
 	if [ "$SETPATCH" = false ]; then
 		update_default_values "$osver" "$osver_orig" "OS version" "ro.build.version.release" osver_default_value
