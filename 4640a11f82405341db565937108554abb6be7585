@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab09af68_6f52ed8f",
+        "filename": "crypto/system/bin/prepdecrypt.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2021-09-03T14:39:16Z",
+      "side": 1,
+      "message": "While you\u0027re doing this, can you simplify this down to just \"SETPATCH\u003dfalse or ro.boot.fastboot found.\" since we\u0027re setting that prop in any case that recognizes that the device has been fastboot booted? Once you make that update, I\u0027ll merge.",
+      "revId": "4640a11f82405341db565937108554abb6be7585",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    }
+  ]
+}
