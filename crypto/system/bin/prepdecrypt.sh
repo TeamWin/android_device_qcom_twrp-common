@@ -188,10 +188,16 @@ check_fastboot_boot()
 {
 	is_fastboot_boot=$(getprop ro.boot.fastboot)
 	twrpfastboot=$(grep twrpfastboot /proc/cmdline)
+	skip_initramfs_present=$(grep skip_initramfs /proc/cmdline)
 	if [ -n "$is_fastboot_boot" ]; then
 		log_print 2 "Fastboot boot detected. ro.boot.fastboot=$is_fastboot_boot"
 	elif [ -z "$is_fastboot_boot" ] && [ -n "$twrpfastboot" ]; then
 		log_print 2 "twrpfastboot flag found. Setting ro.boot.fastboot..."
+		$setprop_bin ro.boot.fastboot 1
+		is_fastboot_boot=$(getprop ro.boot.fastboot)
+		log_print 2 "ro.boot.fastboot=$is_fastboot_boot"
+	elif [ -z "$is_fastboot_boot" ] && [ -n "$skip_initramfs_present" ]; then
+		log_print 2 "skip_initramfs flag found. Setting ro.boot.fastboot..."
 		$setprop_bin ro.boot.fastboot 1
 		is_fastboot_boot=$(getprop ro.boot.fastboot)
 		log_print 2 "ro.boot.fastboot=$is_fastboot_boot"
