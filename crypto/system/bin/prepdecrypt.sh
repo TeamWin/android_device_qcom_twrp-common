@@ -91,13 +91,19 @@ relink()
 finish()
 {
 	if [ "$SETPATCH" = "true" ]; then
-		umount "$TEMPSYS"
-		$setprop_bin $SCRIPTNAME.system_mounted 0
-		rmdir "$TEMPSYS"
+		is_system_mounted=$(getprop $SCRIPTNAME.system_mounted)
+		if [ "$is_system_mounted" = 1 ]; then
+			umount "$TEMPSYS"
+			$setprop_bin $SCRIPTNAME.system_mounted 0
+			rmdir "$TEMPSYS"
+		fi
 		if [ "$MNT_VENDOR" = "true" ]; then
-			umount "$TEMPVEN"
-			$setprop_bin $SCRIPTNAME.vendor_mounted 0
-			rmdir "$TEMPVEN"
+			is_vendor_mounted=$(getprop $SCRIPTNAME.vendor_mounted)
+			if [ "$is_vendor_mounted" = 1 ]; then
+				umount "$TEMPVEN"
+				$setprop_bin $SCRIPTNAME.vendor_mounted 0
+				rmdir "$TEMPVEN"
+			fi
 		fi
 	fi
 	setprop crypto.ready 1
@@ -109,13 +115,19 @@ finish()
 finish_error()
 {
 	if [ "$SETPATCH" = "true" ]; then
-		umount "$TEMPSYS"
-		$setprop_bin $SCRIPTNAME.system_mounted 0
-		rmdir "$TEMPSYS"
+		is_system_mounted=$(getprop $SCRIPTNAME.system_mounted)
+		if [ "$is_system_mounted" = 1 ]; then
+			umount "$TEMPSYS"
+			$setprop_bin $SCRIPTNAME.system_mounted 0
+			rmdir "$TEMPSYS"
+		fi
 		if [ "$MNT_VENDOR" = "true" ]; then
-			umount "$TEMPVEN"
-			$setprop_bin $SCRIPTNAME.vendor_mounted 0
-			rmdir "$TEMPVEN"
+			is_vendor_mounted=$(getprop $SCRIPTNAME.vendor_mounted)
+			if [ "$is_vendor_mounted" = 1 ]; then
+				umount "$TEMPVEN"
+				$setprop_bin $SCRIPTNAME.vendor_mounted 0
+				rmdir "$TEMPVEN"
+			fi
 		fi
 	fi
 	setprop crypto.ready 1
@@ -194,27 +206,21 @@ check_fastboot_boot()
 	is_fastboot_boot=$(getprop ro.boot.fastboot)
 	twrpfastboot=$(grep twrpfastboot /proc/cmdline)
 	skip_initramfs_present=$(grep skip_initramfs /proc/cmdline)
+	boot_mode=$(getprop sys.usb.config)
 	if [ -n "$is_fastboot_boot" ]; then
 		if [ "$SETPATCH_OVERRIDE" = "false" ]; then
 			SETPATCH=false
 		fi
 		log_print 2 "Fastboot boot detected. ro.boot.fastboot=$is_fastboot_boot"
-	elif [ -z "$is_fastboot_boot" ] && [ -n "$twrpfastboot" ]; then
+	elif [ -z "$is_fastboot_boot" ] && { [ -n "$twrpfastboot" ] || [ -n "$skip_initramfs_present" ]; }; then
 		if [ "$SETPATCH_OVERRIDE" = "false" ]; then
 			SETPATCH=false
 		fi
-		log_print 2 "twrpfastboot flag found. Setting ro.boot.fastboot..."
 		$setprop_bin ro.boot.fastboot 1
 		is_fastboot_boot=$(getprop ro.boot.fastboot)
-		log_print 2 "ro.boot.fastboot=$is_fastboot_boot"
-	elif [ -z "$is_fastboot_boot" ] && [ -n "$skip_initramfs_present" ]; then
-		if [ "$SETPATCH_OVERRIDE" = "false" ]; then
-			SETPATCH=false
-		fi
-		log_print 2 "skip_initramfs flag found. Setting ro.boot.fastboot..."
-		$setprop_bin ro.boot.fastboot 1
-		is_fastboot_boot=$(getprop ro.boot.fastboot)
-		log_print 2 "ro.boot.fastboot=$is_fastboot_boot"
+		log_print 2 "Fastboot boot detected. ro.boot.fastboot=$is_fastboot_boot"
+	elif [ "$boot_mode" = "fastboot" ]; then
+		log_print 2 "Fastbootd mode boot detected."
 	else
 		log_print 2 "Recovery mode boot detected."
 	fi
@@ -233,21 +239,27 @@ check_resetprop()
 
 temp_mount()
 {
-	mkdir "$1"
-	if [ -d "$1" ]; then
-		log_print 2 "Temporary $2 folder created at $1."
+	is_mounted=$(ls -A "$1" 2>/dev/null)
+	if [ -n "$is_mounted" ]; then
+		log_print 1 "$2 already mounted."
 	else
-		log_print 0 "Unable to create temporary $2 folder."
-		finish_error
-	fi
-	mount -t ext4 -o ro "$3" "$1"
-	if [ -n "$(ls -A "$1" 2>/dev/null)" ]; then
-		log_print 2 "$2 mounted at $1."
-		$setprop_bin $SCRIPTNAME."$2"_mounted 1
-		log_print 2 "$SCRIPTNAME.$2_mounted=$(getprop "$SCRIPTNAME"."$2"_mounted)"
-	else
-		log_print 0 "Unable to mount $2 to temporary folder."
-		finish_error
+		mkdir "$1"
+		if [ -d "$1" ]; then
+			log_print 2 "Temporary $2 folder created at $1."
+		else
+			log_print 0 "Unable to create temporary $2 folder."
+			finish_error
+		fi
+		mount -t ext4 -o ro "$3" "$1"
+		is_mounted=$(ls -A "$1" 2>/dev/null)
+		if [ -n "$is_mounted" ]; then
+			log_print 2 "$2 mounted at $1."
+			$setprop_bin $SCRIPTNAME."$2"_mounted 1
+			log_print 2 "$SCRIPTNAME.$2_mounted=$(getprop "$SCRIPTNAME"."$2"_mounted)"
+		else
+			log_print 0 "Unable to mount $2 to temporary folder."
+			finish_error
+		fi
 	fi
 }
 
