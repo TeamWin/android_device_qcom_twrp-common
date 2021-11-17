@@ -106,7 +106,9 @@ esac
 
 echo " "
 echo "Running $SCRIPTNAME script for Qcom decryption..."
-echo -e "SDK version: $sdkver\n"
+if [ -n "$sdkver" ]; then
+	echo -e "SDK version: $sdkver\n"
+fi
 
 if [ -e "$rootout/$decrypt_fbe_rc" ]; then
 	is_fbe=true
@@ -115,7 +117,7 @@ if [ -e "$rootout/$decrypt_fbe_rc" ]; then
 fi
 
 # pull filenames for included services
-if [ "$sdkver" -lt 29 ]; then
+if [ -z "$sdkver" ] || [ "$sdkver" -lt 29 ]; then
 	# android-8.1/9.0 branches
 	find_dt_blobs "$venbin"
 else
