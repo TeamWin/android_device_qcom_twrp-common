@@ -151,13 +151,11 @@ patchlevel_default_value()
 update_default_values()
 {
 	if [ -z "$1" ]; then
-		log_print 2 "$4=$1"
 		log_print 0 "No $3. Checking original props..."
 		if [ -n "$2" ]; then
 			log_print 2 "Original $3 found. $4_orig=$2"
 			log_print 2 "Setting $3 to original value..."
-			setprop "$4" "$2"
-			log_print 2 "$3 set. $4=$1"
+			$setprop_bin "$4" "$2"
 			log_print 2 "Updating $DEFAULTPROP with Original $3..."
 			echo "$4=$2" >> "/$DEFAULTPROP";
 			$5 "$4"
@@ -165,8 +163,7 @@ update_default_values()
 			log_print 0 "No Original $3 found. Setting default value..."
 			osver=$osver_twrp
 			patchlevel=$patchlevel_twrp
-			setprop "$4" "$1"
-			log_print 2 "$3 set. $4=$1"
+			$setprop_bin "$4" "$1"
 			log_print 2 "Updating $DEFAULTPROP with default $3..."
 			echo "$4=$1" >> "/$DEFAULTPROP";
 			$5 "$4"
