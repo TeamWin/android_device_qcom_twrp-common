@@ -32,6 +32,7 @@ ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),true)
     # from TARGET_ROOT_OUT thereafter
     LOCAL_POST_INSTALL_CMD += \
         cp -f $(LOCAL_PATH)/crypto_fbe/init.recovery* $(TARGET_ROOT_OUT); \
+        sed -i '2i import /init.recovery.qcom_decrypt.fbe.rc' $(TARGET_ROOT_OUT)/init.recovery.qcom_decrypt.rc; \
         bash $(LOCAL_PATH)/scripts/service_cleanup.bash;
     include $(BUILD_PHONY_PACKAGE)
 endif

@@ -1,5 +1,4 @@
 import /init.recovery.services.qcom_decrypt.rc
-import /init.recovery.qcom_decrypt.fbe.rc
 
 on fs
     # needed to make qseecomd work in recovery
