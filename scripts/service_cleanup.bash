@@ -13,7 +13,7 @@ find_dt_blobs()
 		echo " "
 		exit 0
 	fi
-	included_blobs=($(find "$blob_path" -type f \( -name "*keymaster*" -o -name "*gatekeeper*" \) | awk -F'/' '{print $NF}'))
+	included_blobs=($(find "$blob_path" -type f \( -name "*keymaster*" -o -name "*gatekeeper*" -o -name "*cryptfshw*" \) | awk -F'/' '{print $NF}'))
 }
 
 find_oem()
@@ -103,6 +103,7 @@ fi
 # pull filenames from init.recovery.qcom_decrypt.rc & init.recovery.qcom_decrypt.fbe files
 decrypt_rc="$rootout/$decrypt_rc"
 rc_service_paths=($(grep '^service.*keymaster' "$decrypt_rc" | awk -F'/' '{print $NF}'))
+rc_service_paths+=($(grep '^service.*cryptfshw' "$decrypt_rc" | awk -F'/' '{print $NF}'))
 if [ "$is_fbe" = "true" ]; then
 	rc_service_paths+=($(grep '^service.*gatekeeper' "$decrypt_fbe_rc" | awk -F'/' '{print $NF}'))
 fi
@@ -122,6 +123,10 @@ for service in ${services_not_included[@]}; do
 	find_service_names "system"
 	echo "Removing unneeded service: ${service_name[*]}"
 	case ${service_name[@]} in
+		cryptfshw*)
+			remove_section "$decrypt_rc" "$service"
+			remove_line "$decrypt_rc" "$service_name$" "global"
+			;;
 		gatekeeper*)
 			remove_section "$decrypt_fbe_rc" "$service"
 			remove_line "$decrypt_fbe_rc" "$service_name$" "global"

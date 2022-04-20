@@ -21,6 +21,7 @@ on property:crypto.ready=1 && property:hwservicemanager.ready=true
     start qseecomd
 
 on property:sys.listeners.registered=true
+    start cryptfshw-1-0
     start keymaster-3-0
     start keymaster-3-0-qti
     start keymaster-4-0
@@ -30,6 +31,7 @@ on property:sys.listeners.registered=true
     start keymaster-4-1-citadel
 
 on property:vendor.sys.listeners.registered=true
+    start cryptfshw-1-0
     start keymaster-3-0
     start keymaster-3-0-qti
     start keymaster-4-0
@@ -41,6 +43,7 @@ on property:vendor.sys.listeners.registered=true
 on property:ro.crypto.type=block && property:ro.crypto.fs_crypto_blkdev=*
     setprop crypto.ready 0
     stop qseecomd
+    stop cryptfshw-1-0
     stop keymaster-3-0
     stop keymaster-3-0-qti
     stop keymaster-4-0
@@ -72,6 +75,14 @@ service qseecomd /system/bin/qseecomd
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     disabled
     oneshot
+    seclabel u:r:recovery:s0
+
+service cryptfshw-1-0 /system/bin/vendor.qti.hardware.cryptfshw@1.0-service-qti.qsee
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    oneshot
+    disabled
     seclabel u:r:recovery:s0
 
 service keymaster-3-0 /system/bin/android.hardware.keymaster@3.0-service
