@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8156d7c_d19b0b4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 26
+      },
+      "writtenOn": "2022-04-20T22:22:52Z",
+      "side": 1,
+      "message": "Just noticed, what init.recovery.services.qcom_decrypt.the.rc is actually used on at least some Google devices... Well, I guess it makes sense to import this file from there, right?",
+      "revId": "3fdc79f7981ac0c9bd93a96adade52568eb2359b",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    }
+  ]
+}
