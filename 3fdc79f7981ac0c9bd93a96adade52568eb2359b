@@ -16,6 +16,23 @@
       "message": "Just noticed, what init.recovery.services.qcom_decrypt.the.rc is actually used on at least some Google devices... Well, I guess it makes sense to import this file from there, right?",
       "revId": "3fdc79f7981ac0c9bd93a96adade52568eb2359b",
       "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eb9402e_0a6171cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 26
+      },
+      "writtenOn": "2022-04-20T23:48:13Z",
+      "side": 1,
+      "message": "\u003e Patch Set 4:\n\u003e \n\u003e \u003e Patch Set 4:\n\u003e  \u003e \n\u003e  \u003e (1 comment)\n\u003e I have no idea what you\u0027re saying. These are custom services for TWRP only.\n\nDid I say what they are not? I actually mean what this file (init.recovery.services.qcom_decrypt.fbe.rc) is used in TWRP trees for some Google devices (e.g. bonito, crosshatch). So if you submit this patch, you should add an import for this file to init.recovery.hardware.rc in device tree.",
+      "revId": "3fdc79f7981ac0c9bd93a96adade52568eb2359b",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
     }
   ]
 }
