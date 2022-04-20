@@ -73,7 +73,10 @@ ifeq ($(BOARD_USES_QCOM_DECRYPTION),true)
             cp -f $(LOCAL_PATH)/crypto/init.recovery.qcom_decrypt.rc $(TARGET_ROOT_OUT)/; \
             sed -i 's/on property:ro.crypto.state=encrypted && property:ro.boot.dynamic_partitions=true/on property:ro.crypto.state=encrypted/' $(TARGET_ROOT_OUT)/init.recovery.qcom_decrypt.rc;
     endif
-    ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),)
+    ifeq ($(BOARD_USES_QCOM_FBE_DECRYPTION),true)
+        LOCAL_POST_INSTALL_CMD += \
+            echo -e '\nimport /init.recovery.qcom_decrypt.fbe.rc' >> $(TARGET_ROOT_OUT)/init.recovery.qcom_decrypt.rc;
+    else
         LOCAL_POST_INSTALL_CMD += \
             bash $(LOCAL_PATH)/scripts/service_cleanup.bash;
     endif
