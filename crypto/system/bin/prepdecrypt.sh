@@ -244,7 +244,7 @@ temp_mount()
 			log_print 0 "Unable to create temporary $2 folder."
 			finish_error
 		fi
-		mount -t ext4 -o ro "$3" "$1"
+		mount -o ro "$3" "$1"
 		is_mounted=$(ls -A "$1" 2>/dev/null)
 		if [ -n "$is_mounted" ]; then
 			log_print 2 "$2 mounted at $1."
