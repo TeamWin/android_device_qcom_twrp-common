@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f95d364b_be5ed668",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2023-02-12T03:12:35Z",
+      "side": 1,
+      "message": "Works fine, just needs to wait until the decryption patches are merged",
+      "revId": "29a58a88754bffe37537722ee6a723f15f88963a",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    }
+  ]
+}
