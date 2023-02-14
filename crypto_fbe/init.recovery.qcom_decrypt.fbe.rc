@@ -16,6 +16,7 @@ on property:twrp.all.users.decrypted=true
     stop keymaster-3-0-qti
     stop keymaster-4-0
     stop keymaster-4-0-qti
+    stop keymaster-4-0-sb
     stop keymaster-4-1
     stop keymaster-4-1-qti
     stop keymaster-4-1-citadel
