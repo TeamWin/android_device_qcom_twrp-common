@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cba1f89_caba30a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 103
+      },
+      "writtenOn": "2023-02-15T09:37:32Z",
+      "side": 1,
+      "message": "\u003e Patch Set 1:\n\u003e \n\u003e What device is this needed for? If it\u0027s just a single device, then it would make more sense to keep this addition in the device tree. I have this service on my device, but it\u0027s not needed for decryption. Are you certain that it\u0027s actually required?\n\nI\u0027m currently helping another dev on adding support for decrypt for the S23 family and this is the only keymaster service to be found in vendor. There\u0027s another service called keymint which uses Samsung\u0027s keymaster rather than QTI one but Idk if it\u0027s related to decrypt. I\u0027m waiting the dev to confirm me decrypt works fine with keymaster",
+      "revId": "ef4e0362a3910667cf5fcb0ec1fe8ee31850f015",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    }
+  ]
+}
