@@ -33,6 +33,23 @@
       "message": "\u003e Patch Set 1:\n\u003e \n\u003e What device is this needed for? If it\u0027s just a single device, then it would make more sense to keep this addition in the device tree. I have this service on my device, but it\u0027s not needed for decryption. Are you certain that it\u0027s actually required?\n\nSamsung S/Note lineup, the snapdragon variants, still debugging.\n\nW HidlServiceManagement: Waited one second for android.hardware.keymaster@4.0::IKeymasterDevice/strongbox\nI hwservicemanager: Since android.hardware.keymaster@4.0::IKeymasterDevice/strongbox is not registered, trying to start it as a lazy HAL.\nI HidlServiceManagement: getService: Trying again for android.hardware.keymaster@4.0::IKeymasterDevice/strongbox...\nW libc    : Unable to set property \"ctl.interface_start\" to \"android.hardware.keymaster@4.0::IKeymasterDevice/strongbox\": error code: 0x20\nE init    : Control message: Could not find \u0027android.hardware.keymaster@4.0::IKeymasterDevice/strongbox\u0027 for ctl.interface_start from pid: 760 (/system/bin/hwservicemanager)\nI hwservicemanager: Tried to start android.hardware.keymaster@4.0::IKeymasterDevice/strongbox as a lazy service, but was unable to. Usually this happens when a service is not installed, but if the service is intended to be used as a lazy service, then it may be configured incorrectly.\n",
       "revId": "ef4e0362a3910667cf5fcb0ec1fe8ee31850f015",
       "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b822727_872e1174",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 539
+      },
+      "writtenOn": "2023-02-19T03:00:39Z",
+      "side": 1,
+      "message": "I got encryption working on S23 Ultra, need to add keymint service android.hardware.security.keymint-service\nand add it to the clean script\nThanks guys",
+      "revId": "ef4e0362a3910667cf5fcb0ec1fe8ee31850f015",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
     }
   ]
 }
