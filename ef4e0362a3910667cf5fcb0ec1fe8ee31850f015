@@ -50,6 +50,23 @@
       "message": "I got encryption working on S23 Ultra, need to add keymint service android.hardware.security.keymint-service\nand add it to the clean script\nThanks guys",
       "revId": "ef4e0362a3910667cf5fcb0ec1fe8ee31850f015",
       "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc5460d9_508af2f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1335
+      },
+      "writtenOn": "2024-09-22T14:34:47Z",
+      "side": 1,
+      "message": "Hi there. I got an qcom 8+gen1 device for motorola edge 30 ultra and that use qcom fbe with strongbox keymaster.  and that strongbox (in service android.hardware.keymaster@4.0-strongbox-service-qti ) is widely used in 8+gen3 or above, so maybe we need to re-open this thread again?",
+      "revId": "ef4e0362a3910667cf5fcb0ec1fe8ee31850f015",
+      "serverId": "9c1c7d72-6534-4d44-b0ea-39f63e804833"
     }
   ],
   "submitRequirementResults": []
