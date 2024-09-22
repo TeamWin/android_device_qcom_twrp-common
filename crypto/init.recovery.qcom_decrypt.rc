@@ -19,6 +19,7 @@ on property:ro.crypto.state=encrypted && property:ro.boot.dynamic_partitions=tru
 # hwservicemanager doesn't exist in older trees
 on property:crypto.ready=1 && property:hwservicemanager.ready=true
     start qseecomd
+    start keymint-qti
 
 on property:sys.listeners.registered=true && property:keymaster_ver=3.0
     start keymaster-3-0
@@ -149,4 +150,11 @@ service keymaster-4-1-citadel /system/bin/android.hardware.keymaster@4.1-service
     user root
     group root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    seclabel u:r:recovery:s0
+
+service keymint-qti /system/bin/android.hardware.security.keymint-service-qti
+    disabled
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:vendor/lib64/hw:/vendor/lib:odm/lib64:odm/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
