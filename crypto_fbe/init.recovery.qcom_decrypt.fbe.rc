@@ -3,15 +3,18 @@ import /init.recovery.services.qcom_decrypt.fbe.rc
 on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
     install_keyring
 
+
 on property:vendor.sys.listeners.registered=true
     start gatekeeper-1-0
     start gatekeeper-1-0-qti
+    start gatekeeper_default
 
 on property:twrp.all.users.decrypted=true
     setprop crypto.ready 0
     stop qseecomd
     stop gatekeeper-1-0
     stop gatekeeper-1-0-qti
+    stop gatekeeper_default
     stop keymaster-3-0
     stop keymaster-3-0-qti
     stop keymaster-4-0
@@ -41,6 +44,13 @@ service gatekeeper-1-0-qti /system/bin/android.hardware.gatekeeper@1.0-service-q
     user root
     group root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    disabled
+    seclabel u:r:recovery:s0
+
+service gatekeeper_default /system/bin/android.hardware.gatekeeper-service-qti
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib64/hw:/vendor/lib:odm/lib64:odm/lib:/system/lib64:/system/lib:/sbin
     disabled
     seclabel u:r:recovery:s0
 
